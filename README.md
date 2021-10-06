@@ -27,4 +27,4 @@ It's goals are **not** as follows:
 - Compile on non Unix-like machines
 
 ## License
-(GPL)[https://github.com/dumrich/zui/blob/master/LICENSE.md]
+(https://github.com/dumrich/zui/blob/master/LICENSE.md)[GPL]
