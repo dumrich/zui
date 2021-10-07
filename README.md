@@ -25,7 +25,7 @@ It's goals are **not** as follows:
 - Be good (`tui-rs` + `termion` are better)
 - Compile on Stable Rust (`asm!`)
 - Compile on non x64 machines (`asm!`)
-- Compile on non Unix-like machines
+- Compile on non Linux machines
 
 ## License
 [GPL](https://github.com/dumrich/zui/blob/master/LICENSE.md)
