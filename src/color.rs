@@ -33,14 +33,119 @@ pub enum Color {
     Reset,
 }
 
-fn derive_color(color: Color) -> &'static str {
+fn derive_color_fg(color: Color) -> &'static str {
     match color {
-        _ => "", // TODO: Create this function
+        Color::Black => "\u{001b}[30m",
+        Color::Red => "\u{001b}[31m",
+        Color::Green => "\u{001b}[32m",
+        Color::Yellow => "\u{001b}[33m",
+        Color::Blue => "\u{001b}[34m",
+        Color::Purple => "\u{001b}[35m",
+        Color::Cyan => "\u{001b}[36m",
+        Color::White => "\u{001b}[37m",
+        Color::Reset => "\u{001b}[0m",
+        Color::BlackLight => "\u{001b}[30;1m",
+        Color::RedLight => "\u{001b}[30;1m",
+        Color::GreenLight => "\u{001b}[32;1m",
+        Color::YellowLight => "\u{001b}[33;1m",
+        Color::BlueLight => "\u{001b}[34;1m",
+        Color::PurpleLight => "\u{001b}[35;1m",
+        Color::CyanLight => "\u{001b}[361;1m",
+        Color::WhiteLight => "\u{001b}[37;1m",
     }
 }
 
-pub fn Fg(color: Color) -> Ansi {
+fn derive_color_bg(color: Color) -> &'static str {
     match color {
-        _ => Ansi::from_str(derive_color(color)),
+        Color::Black => "\u{001b}[40m",
+        Color::Red => "\u{001b}[41m",
+        Color::Green => "\u{001b}[42m",
+        Color::Yellow => "\u{001b}[43m",
+        Color::Blue => "\u{001b}[44m",
+        Color::Purple => "\u{001b}[45m",
+        Color::Cyan => "\u{001b}[46m",
+        Color::White => "\u{001b}[47m",
+        Color::Reset => "\u{001b}[0m",
+        Color::BlackLight => "\u{001b}[40;1m",
+        Color::RedLight => "\u{001b}[40;1m",
+        Color::GreenLight => "\u{001b}[42;1m",
+        Color::YellowLight => "\u{001b}[43;1m",
+        Color::BlueLight => "\u{001b}[44;1m",
+        Color::PurpleLight => "\u{001b}[45;1m",
+        Color::CyanLight => "\u{001b}[461;1m",
+        Color::WhiteLight => "\u{001b}[47;1m",
+    }
+}
+
+pub fn fg(color: Color) -> Ansi {
+    match color {
+        _ => Ansi::from_str(derive_color_fg(color)),
+    }
+}
+
+pub fn bg(color: Color) -> Ansi {
+    match color {
+        _ => Ansi::from_str(derive_color_bg(color)),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::color::*;
+
+    #[test]
+    fn test_fg_colors() {
+        let my_color = Color::Red;
+        let yellow_color = Color::Yellow;
+        let purple_color = Color::Purple;
+
+        println!(
+            "{}I am writing in the color Red!{} Now regular!",
+            fg(my_color),
+            fg(Color::Reset)
+        );
+
+        println!(
+            "{}I am writing in the color Yellow!{} Now regular!",
+            fg(yellow_color),
+            fg(Color::Reset)
+        );
+
+        println!(
+            "{}I am writing in the color Purple!{} Now Green!{}",
+            fg(purple_color),
+            fg(Color::Green),
+            fg(Color::Reset)
+        );
+
+        assert_eq!(1, 1);
+    }
+
+    #[test]
+    fn test_bg_colors() {
+        let my_color = Color::Red;
+        let yellow_color = Color::Yellow;
+        let purple_color = Color::Purple;
+
+        println!(
+            "{}I am writing in the color Red!{} Now regular!",
+            bg(my_color),
+            bg(Color::Reset)
+        );
+
+        println!(
+            "{}I am writing in the color Yellow!{} Now regular!",
+            bg(yellow_color),
+            bg(Color::Reset)
+        );
+
+        println!(
+            "{}I am writing in the color Purple!{} Now Green!{}",
+            bg(purple_color),
+            bg(Color::Green),
+            bg(Color::Reset)
+        );
+
+        assert_eq!(1, 1);
     }
 }

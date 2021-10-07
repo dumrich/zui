@@ -9,9 +9,9 @@ It's goals are as follows:
 - [x] Zero external dependencies
 - [ ] Low-level Terminal information
 - [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
-- [ ] Color Support
+- [x] Color Support
 - [ ] Event Handling
-- [ ] User Input
+- [ ] Cursor Input
 - [ ] ANSI Raw Mode Support
 - [ ] Text Styling
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
