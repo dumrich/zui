@@ -1,5 +1,5 @@
-# zui
 [![Rust](https://github.com/dumrich/zui/actions/workflows/rust.yml/badge.svg)](https://github.com/dumrich/zui/actions/workflows/rust.yml)
+# zui
 A minimal terminal manipulation library written in Rust.
 
 ## What is it?
