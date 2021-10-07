@@ -8,15 +8,17 @@ A minimal terminal manipulation library written in Rust.
 It's goals are as follows:
 
 - [x] Zero external dependencies
-- [ ] Low-level Terminal information
-- [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
 - [x] Color Support
-- [ ] Event Handling
-- [ ] Cursor Input
-- [ ] ANSI Raw Mode Support
 - [ ] Text Styling
+- [ ] Cursor Support
+- [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
+- [ ] Low-level Terminal information
+- [ ] Keyboard Support
+- [ ] Event Handling
+- [ ] ANSI Raw Mode Support
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
-- [ ] Positioning and Resizing support
+- [ ] Positioning and Dynamic Resizing support
+- [ ] Custom Widgets with Component Trait
 
 ## What isn't it?
 
