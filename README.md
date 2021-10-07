@@ -18,13 +18,13 @@ It's goals are as follows:
 - [ ] ANSI Raw Mode Support
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
 - [ ] Positioning and Dynamic Resizing support
-- [ ] Custom Widgets with Component Trait
+- [ ] Custom Widgets with Component Trai
+- [ ] Font Sizes
 
 ## What isn't it?
 
 It's goals are **not** as follows:
 
-- Be good (`tui-rs` + `termion` are better)
 - Compile on Stable Rust (`asm!`)
 - Compile on non x64 machines (`asm!`)
 - Compile on non Linux machines
