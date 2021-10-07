@@ -11,8 +11,12 @@
 // Author: Abhinav Chavali
 // Date: October 6th, 2021
 // Updated: October 6th, 2021
+
+// Imports
 use crate::Ansi;
 
+// Color Options
+#[derive(Copy, Clone)]
 pub enum Color {
     Black,
     Red,

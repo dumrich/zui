@@ -2,6 +2,9 @@
 
 // Define Modules
 mod color;
+mod cursor;
+mod style;
+mod terminal;
 
 // Imports
 use std::fmt;
