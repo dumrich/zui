@@ -49,7 +49,7 @@ fn derive_color_fg(color: Color) -> &'static str {
         Color::White => "\u{001b}[37m",
         Color::Reset => "\u{001b}[0m",
         Color::BlackLight => "\u{001b}[30;1m",
-        Color::RedLight => "\u{001b}[30;1m",
+        Color::RedLight => "\u{001b}[31;1m",
         Color::GreenLight => "\u{001b}[32;1m",
         Color::YellowLight => "\u{001b}[33;1m",
         Color::BlueLight => "\u{001b}[34;1m",
@@ -71,7 +71,7 @@ fn derive_color_bg(color: Color) -> &'static str {
         Color::White => "\u{001b}[47m",
         Color::Reset => "\u{001b}[0m",
         Color::BlackLight => "\u{001b}[40;1m",
-        Color::RedLight => "\u{001b}[40;1m",
+        Color::RedLight => "\u{001b}[41;1m",
         Color::GreenLight => "\u{001b}[42;1m",
         Color::YellowLight => "\u{001b}[43;1m",
         Color::BlueLight => "\u{001b}[44;1m",
@@ -82,15 +82,11 @@ fn derive_color_bg(color: Color) -> &'static str {
 }
 
 pub fn fg(color: Color) -> Ansi {
-    match color {
-        _ => Ansi::from_str(derive_color_fg(color)),
-    }
+    Ansi::from_str(derive_color_fg(color))
 }
 
 pub fn bg(color: Color) -> Ansi {
-    match color {
-        _ => Ansi::from_str(derive_color_bg(color)),
-    }
+    Ansi::from_str(derive_color_bg(color))
 }
 
 #[cfg(test)]

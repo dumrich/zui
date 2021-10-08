@@ -9,7 +9,7 @@ It's goals are as follows:
 
 - [x] Zero external dependencies
 - [x] Color Support
-- [ ] Text Styling
+- [x] Text Styling
 - [ ] Cursor Support
 - [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
 - [ ] Low-level Terminal information
