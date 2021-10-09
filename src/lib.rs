@@ -1,9 +1,9 @@
 #![warn(clippy::all, clippy::pedantic, clippy::cargo)]
-#[allow(dead_code)]
+#![allow(dead_code)]
 // Define Modules
-mod color;
-mod style;
-mod term;
+pub mod color;
+pub mod style;
+pub mod term;
 
 // Imports
 use std::fmt;

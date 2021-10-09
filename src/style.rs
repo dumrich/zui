@@ -50,30 +50,31 @@ fn set(style: Style) -> Ansi {
 
 #[cfg(test)]
 mod tests {
-    use crate::style::*;
+    use crate::style::set;
+    use crate::style::Style::{Blinking, Bold, Italic, Reset, Strike, Underline};
 
     #[test]
     fn test_styling() {
-        let bold = Style::Bold;
-        let italic = Style::Italic;
-        let strike = Style::Strike;
+        let bold = Bold;
+        let italic = Italic;
+        let strike = Strike;
 
         println!(
             "{}I am writing in Bold!{} Now regular!",
             set(bold),
-            set(Style::Reset)
+            set(Reset)
         );
 
         println!(
             "{}I am writing in Italic!{} Now regular!",
             set(italic),
-            set(Style::Reset)
+            set(Reset)
         );
 
         println!(
             "{}I am writing in Strike!{} Now regular!",
-            set(Strike),
-            set(Style::Reset)
+            set(strike),
+            set(Reset)
         );
         assert_eq!(1, 1);
     }
