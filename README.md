@@ -10,24 +10,22 @@ It's goals are as follows:
 - [x] Zero external dependencies
 - [x] Color Support
 - [x] Text Styling
-- [ ] Cursor Support
+- [x] Low-level Terminal information
+- [x] Cursor Support
 - [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
-- [ ] Low-level Terminal information
 - [ ] Keyboard Support
 - [ ] Event Handling
 - [ ] ANSI Raw Mode Support
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
 - [ ] Positioning and Dynamic Resizing support
-- [ ] Custom Widgets with Component Trai
+- [ ] Custom Widgets with Component Traits
 - [ ] Font Sizes
 
 ## What isn't it?
 
 It's goals are **not** as follows:
 
-- Compile on Stable Rust (`asm!`)
-- Compile on non x64 machines (`asm!`)
-- Compile on non Linux machines
+- Compile on non Unix machines
 
 ## License
 [GPL](https://github.com/dumrich/zui/blob/master/LICENSE.md)
