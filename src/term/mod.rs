@@ -8,16 +8,16 @@ use crate::term::cursor::*;
 use std::io::Write;
 
 #[derive(Debug)]
-pub struct Terminal<T: Write> {
+pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
-    stdout: T,
+    stdout: &'a mut T,
     pub x_pos: u16,
     pub y_pos: u16,
 }
 
-impl<T: Write> Terminal<T> {
-    pub fn new(stdout: T) -> Result<Terminal<T>, ()> {
+impl<'a, T: Write> Terminal<'a, T> {
+    pub fn new(stdout: &'a mut T) -> Result<Terminal<T>, ()> {
         let (rel_size, pix_size) = sys::term_size()?;
 
         Ok(Terminal {
