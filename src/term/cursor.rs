@@ -30,7 +30,7 @@ use std::io::Write;
 
 pub fn set_cursor_to<T: Write>(term: &mut Terminal<T>, x_pos: u16, y_pos: u16) -> Result<(), ()> {
     if x_pos <= term.rel_size.0 && y_pos <= term.rel_size.1 {
-        write!(term.stdout, "\u{001b}[{};{}f", x_pos, y_pos).unwrap();
+        writeln!(term.stdout, "\u{001b}[{};{}f", x_pos, y_pos).unwrap();
         term.x_pos = x_pos;
         term.y_pos = y_pos;
         Ok(())
