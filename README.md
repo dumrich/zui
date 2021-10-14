@@ -13,9 +13,9 @@ It's goals are as follows:
 - [x] Low-level Terminal information
 - [x] Cursor Support
 - [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
+- [ ] ANSI Raw Mode Support and multiple screens
 - [ ] Keyboard Support
 - [ ] Event Handling
-- [ ] ANSI Raw Mode Support
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
 - [ ] Positioning and Dynamic Resizing support
 - [ ] Custom Widgets with Component Traits

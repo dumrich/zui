@@ -14,6 +14,7 @@ pub struct Terminal<'a, T: Write> {
     stdout: &'a mut T,
     pub x_pos: u16,
     pub y_pos: u16,
+    pub cursor_mode: Cursor,
 }
 
 impl<'a, T: Write> Terminal<'a, T> {
@@ -26,6 +27,7 @@ impl<'a, T: Write> Terminal<'a, T> {
             stdout,
             x_pos: 0,
             y_pos: 0,
+            cursor_mode: Cursor::Default,
         })
     }
 
@@ -82,6 +84,11 @@ impl<'a, T: Write> Terminal<'a, T> {
 
     pub fn steady_bar(&mut self) {
         steady_bar(self).unwrap();
+        self.stdout.flush().unwrap();
+    }
+
+    pub fn reset_cursor(&mut self) {
+        reset_cursor(self).unwrap();
         self.stdout.flush().unwrap();
     }
 }

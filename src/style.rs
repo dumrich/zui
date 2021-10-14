@@ -44,7 +44,7 @@ fn derive_style(style: Style) -> &'static str {
     }
 }
 
-fn set(style: Style) -> Ansi {
+pub fn set(style: Style) -> Ansi {
     Ansi::from_str(derive_style(style))
 }
 
