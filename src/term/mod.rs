@@ -1,11 +1,11 @@
 // Declarations
 mod clear;
-mod cursor;
+pub mod cursor;
 mod sys;
 
 // Imports
 use crate::term::cursor::*;
-use std::io::Write;
+use std::io::{Stdout, Write};
 
 #[derive(Debug)]
 pub struct Terminal<'a, T: Write> {
@@ -41,54 +41,81 @@ impl<'a, T: Write> Terminal<'a, T> {
             false
         }
     }
+}
 
-    pub fn set_cursor(&mut self, x_pos: u16, y_pos: u16) {
-        set_cursor_to(self, x_pos, y_pos).expect("Windows? More like Win-Blows");
-        self.stdout.flush().unwrap();
+// Cursor Methods
+impl<T: Write> TCursor for Terminal<'_, T> {
+    fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> Result<(), ()> {
+        if x_pos <= self.rel_size.0 && y_pos <= self.rel_size.1 {
+            writeln!(self.stdout, "\u{001b}[{};{}f", x_pos, y_pos).unwrap();
+            self.x_pos = x_pos;
+            self.y_pos = y_pos;
+            Ok(())
+        } else {
+            Err(())
+        }
     }
 
-    pub fn show_cursor(&mut self) {
-        show_cursor(self).unwrap();
+    fn show_cursor(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Default;
+        let result = write!(self.stdout, "\u{001b}[?25h").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn hide_cursor(&mut self) {
-        hide_cursor(self).unwrap();
+    fn hide_cursor(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Hidden;
+        let result = write!(self.stdout, "\u{001b}[?25l").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn blinking_block(&mut self) {
-        blinking_block(self).unwrap();
+    fn blinking_block(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::BlinkingBlock;
+        let result = write!(self.stdout, "\u{001b}[1 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn steady_block(&mut self) {
-        steady_block(self).unwrap();
+    fn steady_block(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Block;
+        let result = write!(self.stdout, "\u{001b}[2 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn blinking_underline(&mut self) {
-        blinking_underline(self).unwrap();
+    fn blinking_underline(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::BlinkingUnderline;
+        let result = write!(self.stdout, "\u{001b}[3 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn steady_underline(&mut self) {
-        steady_underline(self).unwrap();
+    fn steady_underline(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Underline;
+        let result = write!(self.stdout, "\u{001b}[4 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn blinking_bar(&mut self) {
-        blinking_bar(self).unwrap();
+    fn blinking_bar(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::BlinkingBar;
+        let result = write!(self.stdout, "\u{001b}[5 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn steady_bar(&mut self) {
-        steady_bar(self).unwrap();
+    fn steady_bar(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Bar;
+        let result = write!(self.stdout, "\u{001b}[6 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 
-    pub fn reset_cursor(&mut self) {
-        reset_cursor(self).unwrap();
+    fn reset_cursor(&mut self) -> Result<(), ()> {
+        self.cursor_mode = Cursor::Default;
+        let result = write!(self.stdout, "\u{001b}[0 q").unwrap();
         self.stdout.flush().unwrap();
+        Ok(result)
     }
 }

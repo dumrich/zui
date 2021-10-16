@@ -11,12 +11,12 @@
 //     terminal.show_cursor().unwrap();
 //     terminal.hide_cursor().unwrap();
 //
-//     terminal.blink_block_cursor().unwrap();
-//     terminal.steady_block_cursor().unwrap();
-//     terminal.blink_underline_cursor().unwrap();
-//     terminal.steady_underline_cursor().unwrap();
-//     terminal.blink_bar_cursor().unwrap();
-//     terminal.steady_bar_cursor().unwrap();
+//     terminal.blinking_block().unwrap();
+//     terminal.steady_block().unwrap();
+//     terminal.blinking_underline().unwrap();
+//     terminal.steady_underline().unwrap();
+//     terminal.blinking_bar().unwrap();
+//     terminal.steady_bar().unwrap();
 // }
 // ```
 //
@@ -40,69 +40,26 @@ pub enum Cursor {
     Bar,
 }
 
-pub fn set_cursor_to<T: Write>(term: &mut Terminal<T>, x_pos: u16, y_pos: u16) -> Result<(), ()> {
-    if x_pos <= term.rel_size.0 && y_pos <= term.rel_size.1 {
-        writeln!(term.stdout, "\u{001b}[{};{}f", x_pos, y_pos).unwrap();
-        term.x_pos = x_pos;
-        term.y_pos = y_pos;
-        Ok(())
-    } else {
-        Err(())
-    }
-}
+pub trait TCursor {
+    fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> Result<(), ()>;
 
-pub fn show_cursor<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Default;
-    let result = write!(term.stdout, "\u{001b}[?25h").unwrap();
-    Ok(result)
-}
+    fn show_cursor(&mut self) -> Result<(), ()>;
 
-pub fn hide_cursor<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Hidden;
-    let result = write!(term.stdout, "\u{001b}[?25l").unwrap();
-    Ok(result)
-}
+    fn hide_cursor(&mut self) -> Result<(), ()>;
 
-pub fn blinking_block<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::BlinkingBlock;
-    let result = write!(term.stdout, "\u{001b}[1 q").unwrap();
-    Ok(result)
-}
+    fn blinking_block(&mut self) -> Result<(), ()>;
 
-pub fn steady_block<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Block;
-    let result = write!(term.stdout, "\u{001b}[2 q").unwrap();
-    Ok(result)
-}
+    fn steady_block(&mut self) -> Result<(), ()>;
 
-pub fn blinking_underline<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::BlinkingUnderline;
-    let result = write!(term.stdout, "\u{001b}[3 q").unwrap();
-    Ok(result)
-}
+    fn blinking_underline(&mut self) -> Result<(), ()>;
 
-pub fn steady_underline<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Underline;
-    let result = write!(term.stdout, "\u{001b}[4 q").unwrap();
-    Ok(result)
-}
+    fn steady_underline(&mut self) -> Result<(), ()>;
 
-pub fn blinking_bar<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::BlinkingBar;
-    let result = write!(term.stdout, "\u{001b}[5 q").unwrap();
-    Ok(result)
-}
+    fn blinking_bar(&mut self) -> Result<(), ()>;
 
-pub fn steady_bar<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Bar;
-    let result = write!(term.stdout, "\u{001b}[6 q").unwrap();
-    Ok(result)
-}
+    fn steady_bar(&mut self) -> Result<(), ()>;
 
-pub fn reset_cursor<T: Write>(term: &mut Terminal<T>) -> Result<(), ()> {
-    term.cursor_mode = Cursor::Default;
-    let result = write!(term.stdout, "\u{001b}[0 q").unwrap();
-    Ok(result)
+    fn reset_cursor(&mut self) -> Result<(), ()>;
 }
 
 // TODO: Fix these tests please.
