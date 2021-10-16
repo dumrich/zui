@@ -4,6 +4,7 @@
 //
 // ```rust
 // use zui::term::Terminal;
+// use zui::term::cursor::TCursor;
 //
 // fn main() {
 //     terminal.set_cursor(4: u16, 29: u16).unwrap();
@@ -26,7 +27,7 @@
 
 // imports
 use crate::term::Terminal;
-use std::io::Write;
+use std::io::{self, Write};
 
 #[derive(Debug)]
 pub enum Cursor {
@@ -40,26 +41,27 @@ pub enum Cursor {
     Bar,
 }
 
+type IoResult = io::Result<()>;
 pub trait TCursor {
-    fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> Result<(), ()>;
+    fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> IoResult;
 
-    fn show_cursor(&mut self) -> Result<(), ()>;
+    fn show_cursor(&mut self) -> IoResult;
 
-    fn hide_cursor(&mut self) -> Result<(), ()>;
+    fn hide_cursor(&mut self) -> IoResult;
 
-    fn blinking_block(&mut self) -> Result<(), ()>;
+    fn blinking_block(&mut self) -> IoResult;
 
-    fn steady_block(&mut self) -> Result<(), ()>;
+    fn steady_block(&mut self) -> IoResult;
 
-    fn blinking_underline(&mut self) -> Result<(), ()>;
+    fn blinking_underline(&mut self) -> IoResult;
 
-    fn steady_underline(&mut self) -> Result<(), ()>;
+    fn steady_underline(&mut self) -> IoResult;
 
-    fn blinking_bar(&mut self) -> Result<(), ()>;
+    fn blinking_bar(&mut self) -> IoResult;
 
-    fn steady_bar(&mut self) -> Result<(), ()>;
+    fn steady_bar(&mut self) -> IoResult;
 
-    fn reset_cursor(&mut self) -> Result<(), ()>;
+    fn reset_cursor(&mut self) -> IoResult;
 }
 
 // TODO: Fix these tests please.
