@@ -26,7 +26,6 @@
 // Updated: October 13th, 2021
 
 // imports
-use crate::term::Terminal;
 use std::io::{self, Write};
 
 #[derive(Debug)]

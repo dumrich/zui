@@ -1,10 +1,11 @@
 // Declarations
-mod clear;
+pub mod clear;
 pub mod cursor;
 mod sys;
 
 // Imports
-use crate::term::cursor::*;
+use crate::term::clear::TClear;
+use crate::term::cursor::{Cursor, TCursor};
 use std::io::{self, Stdout, Write};
 
 #[derive(Debug)]
@@ -115,6 +116,32 @@ impl<T: Write> TCursor for Terminal<'_, T> {
     fn reset_cursor(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Default;
         let result = write!(self.stdout, "\u{001b}[0 q")?;
+        self.stdout.flush().unwrap();
+        Ok(result)
+    }
+}
+
+impl<T: Write> TClear for Terminal<'_, T> {
+    fn clear_screen(&mut self) -> io::Result<()> {
+        let result = write!(self.stdout, "\u{001b}[2J")?;
+        self.stdout.flush().unwrap();
+        Ok(result)
+    }
+
+    fn clear_below_cursor(&mut self) -> io::Result<()> {
+        let result = write!(self.stdout, "\u{001b}[0J")?;
+        self.stdout.flush().unwrap();
+        Ok(result)
+    }
+
+    fn clear_above_cursor(&mut self) -> io::Result<()> {
+        let result = write!(self.stdout, "\u{001b}[1J")?;
+        self.stdout.flush().unwrap();
+        Ok(result)
+    }
+
+    fn clear_line(&mut self) -> io::Result<()> {
+        let result = write!(self.stdout, "\u{001b}[K")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }

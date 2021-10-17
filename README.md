@@ -12,7 +12,7 @@ It's goals are as follows:
 - [x] Text Styling
 - [x] Low-level Terminal information
 - [x] Cursor Support
-- [ ] Clear Terminal Support (0%, 25%, 50%, 100%)
+- [x] Clear Terminal Support
 - [ ] ANSI Raw Mode Support and multiple screens
 - [ ] Keyboard Support
 - [ ] Event Handling
