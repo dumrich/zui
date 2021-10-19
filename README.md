@@ -7,7 +7,7 @@ A minimal terminal manipulation library written in Rust.
 
 It's goals are as follows:
 
-- [x] Zero external dependencies
+- [x] Zero external dependencies (aside from libc)
 - [x] Color Support
 - [x] Text Styling
 - [x] Low-level Terminal information

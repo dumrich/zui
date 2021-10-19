@@ -6,7 +6,7 @@ mod sys;
 // Imports
 use crate::term::clear::TClear;
 use crate::term::cursor::{Cursor, TCursor};
-use std::io::{self, Stdout, Write};
+use std::io::{self, Write};
 
 #[derive(Debug)]
 pub struct Terminal<'a, T: Write> {
