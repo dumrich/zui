@@ -6,9 +6,10 @@ mod sys;
 // Imports
 use crate::term::clear::TClear;
 use crate::term::cursor::{Cursor, TCursor};
+use std::fmt::Debug;
 use std::io::{self, Write};
+use sys::{get_attr, set_attr, set_raw, Termios};
 
-#[derive(Debug)]
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
@@ -16,6 +17,18 @@ pub struct Terminal<'a, T: Write> {
     pub x_pos: u16,
     pub y_pos: u16,
     pub cursor_mode: Cursor,
+    prev_ios: Termios,
+}
+
+impl<T: Write> Debug for Terminal<'_, T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Terminal")
+            .field("Relative Size", &(self.rel_size))
+            .field("Pixels Size", &(self.pix_size))
+            .field("x_pos, y_pos", &(self.x_pos, self.y_pos))
+            .field("Cursor Mode", &self.cursor_mode)
+            .finish()
+    }
 }
 
 impl<'a, T: Write> Terminal<'a, T> {
@@ -29,6 +42,7 @@ impl<'a, T: Write> Terminal<'a, T> {
             x_pos: 0,
             y_pos: 0,
             cursor_mode: Cursor::Default,
+            prev_ios: get_attr(),
         })
     }
 
@@ -41,6 +55,17 @@ impl<'a, T: Write> Terminal<'a, T> {
         } else {
             false
         }
+    }
+
+    pub fn enter_raw_mode(&mut self) -> io::Result<()> {
+        let mut ios = get_attr();
+        self.prev_ios = ios;
+
+        set_raw(&mut ios);
+
+        set_attr(&mut ios);
+
+        Ok(())
     }
 }
 

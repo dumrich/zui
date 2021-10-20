@@ -18,7 +18,6 @@ struct WinSize {
 
 extern "C" {
     fn ioctl(fd: raw::c_int, request: raw::c_ulong, ...) -> raw::c_int;
-
 }
 
 type Size = ((u16, u16), (u16, u16));
@@ -39,3 +38,37 @@ pub fn term_size() -> Result<Size, ()> {
 }
 
 // Enter Raw mode
+use super::Terminal;
+pub use libc::termios as Termios;
+use std::io::{self, Write};
+
+extern "C" {
+    fn tcgetattr(fd: raw::c_int, termios: &mut Termios) -> raw::c_int;
+
+    fn tcsetattr(fd: raw::c_int, optional_actions: raw::c_int, termios: &mut Termios)
+        -> raw::c_int;
+
+    fn cfmakeraw(termios: &mut Termios);
+
+}
+
+// TODO: Add error handling
+pub fn get_attr() -> Termios {
+    unsafe {
+        let mut termios = core::mem::zeroed();
+        tcgetattr(1, &mut termios);
+        termios
+    }
+}
+
+pub fn set_attr(termios: &mut Termios) {
+    unsafe {
+        tcsetattr(1, 0, termios);
+    }
+}
+
+pub fn set_raw(termios: &mut Termios) {
+    unsafe {
+        cfmakeraw(termios);
+    }
+}
