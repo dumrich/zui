@@ -10,6 +10,10 @@ use std::fmt::Debug;
 use std::io::{self, Write};
 use sys::{get_attr, set_attr, set_raw, Termios};
 
+pub enum TermMode {
+    Cannonical,
+    Raw,
+}
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
@@ -17,6 +21,7 @@ pub struct Terminal<'a, T: Write> {
     pub x_pos: u16,
     pub y_pos: u16,
     pub cursor_mode: Cursor,
+    pub mode: TermMode,
     prev_ios: Termios,
 }
 
@@ -31,6 +36,12 @@ impl<T: Write> Debug for Terminal<'_, T> {
     }
 }
 
+impl<T: Write> Drop for Terminal<'_, T> {
+    fn drop(&mut self) {
+        set_attr(&mut self.prev_ios);
+    }
+}
+
 impl<'a, T: Write> Terminal<'a, T> {
     pub fn new(stdout: &'a mut T) -> Result<Terminal<T>, ()> {
         let (rel_size, pix_size) = sys::term_size()?;
@@ -42,6 +53,7 @@ impl<'a, T: Write> Terminal<'a, T> {
             x_pos: 0,
             y_pos: 0,
             cursor_mode: Cursor::Default,
+            mode: TermMode::Cannonical,
             prev_ios: get_attr(),
         })
     }
@@ -59,11 +71,11 @@ impl<'a, T: Write> Terminal<'a, T> {
 
     pub fn enter_raw_mode(&mut self) -> io::Result<()> {
         let mut ios = get_attr();
-        self.prev_ios = ios;
 
         set_raw(&mut ios);
 
         set_attr(&mut ios);
+        self.mode = TermMode::Raw;
 
         Ok(())
     }
@@ -73,7 +85,8 @@ impl<'a, T: Write> Terminal<'a, T> {
 impl<T: Write> TCursor for Terminal<'_, T> {
     fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> io::Result<()> {
         if x_pos <= self.rel_size.0 && y_pos <= self.rel_size.1 {
-            let result = writeln!(self.stdout, "\u{001b}[{};{}f", x_pos, y_pos)?;
+            let result = write!(self.stdout, "\u{001b}[{};{}f", y_pos, x_pos)?;
+            self.stdout.flush().unwrap();
             self.x_pos = x_pos;
             self.y_pos = y_pos;
             Ok(result)

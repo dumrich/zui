@@ -26,7 +26,7 @@
 // Updated: October 13th, 2021
 
 // imports
-use std::io::{self, Write};
+use std::io;
 
 #[derive(Debug)]
 pub enum Cursor {

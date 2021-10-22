@@ -38,9 +38,7 @@ pub fn term_size() -> Result<Size, ()> {
 }
 
 // Enter Raw mode
-use super::Terminal;
 pub use libc::termios as Termios;
-use std::io::{self, Write};
 
 extern "C" {
     fn tcgetattr(fd: raw::c_int, termios: &mut Termios) -> raw::c_int;

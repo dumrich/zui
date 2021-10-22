@@ -1,9 +1,9 @@
 use std::io::stdin;
-use std::io::{self, Write};
+use std::io::{self, Read};
+use std::process;
 use std::thread;
 use std::time::Duration;
-use zui::color::{self, Color};
-use zui::style;
+use zui::term::cursor::TCursor;
 use zui::term::Terminal;
 
 fn main() {
@@ -13,6 +13,12 @@ fn main() {
     my_term.enter_raw_mode().unwrap();
 
     thread::sleep(Duration::from_secs(2));
-    let mut output = String::new();
-    let b1 = stdin().read_line(&mut output).unwrap();
+
+    for k in stdin().bytes() {
+        my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
+        println!("{}", my_term.y_pos);
+        if let Ok(3) = k {
+            process::exit(1);
+        }
+    }
 }
