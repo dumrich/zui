@@ -14,11 +14,14 @@ fn main() {
 
     thread::sleep(Duration::from_secs(2));
 
+    let mut x: Vec<char> = Vec::new();
     for k in stdin().bytes() {
         my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
-        println!("{}", my_term.y_pos);
+        x.push(*k.as_ref().unwrap() as char);
+        println!("{:?} {:?}", x, my_term);
         if let Ok(3) = k {
             process::exit(1);
         }
+        x.clear();
     }
 }

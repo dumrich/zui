@@ -2,6 +2,7 @@
 #![allow(dead_code)]
 // Define Modules
 pub mod color;
+pub mod key;
 pub mod style;
 pub mod term;
 

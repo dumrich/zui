@@ -39,6 +39,7 @@ impl<T: Write> Debug for Terminal<'_, T> {
 impl<T: Write> Drop for Terminal<'_, T> {
     fn drop(&mut self) {
         set_attr(&mut self.prev_ios);
+        self.mode = TermMode::Cannonical;
     }
 }
 
@@ -59,10 +60,11 @@ impl<'a, T: Write> Terminal<'a, T> {
     }
 
     pub fn size_did_change(&mut self) -> bool {
-        let (rel_size, _pix_size) = sys::term_size().unwrap(); // TODO: Fix
+        let (rel_size, pix_size) = sys::term_size().unwrap(); // TODO: Fix
 
         if rel_size != (self.rel_size) {
             self.rel_size = rel_size;
+            self.pix_size = pix_size;
             true
         } else {
             false

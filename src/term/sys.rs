@@ -34,7 +34,7 @@ pub fn term_size() -> Result<Size, ()> {
         }
     }
 
-    Ok(((size.ws_row, size.ws_col), (size.ws_xpixel, size.ws_ypixel)))
+    Ok(((size.ws_col, size.ws_row), (size.ws_xpixel, size.ws_ypixel)))
 }
 
 // Enter Raw mode
