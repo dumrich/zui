@@ -45,12 +45,10 @@ pub enum Keys {
     Esc,
 }
 
-// pub fn to_char(c: char) -> Keys {
-//     if c.is_alphanumeric() {
-//         Keys::Char(c)
-//     } else if  {
-//
-//     }
-// }
-
-// fn to_char_csi(c: &[u8]) -> Keys;
+pub fn from_char(c: char) -> Option<Keys> {
+    if c.is_ascii() {
+        Some(Keys::Char(c))
+    } else {
+        None
+    }
+}
