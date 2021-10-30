@@ -13,13 +13,16 @@ It's goals are as follows:
 - [x] Low-level Terminal information
 - [x] Cursor Support
 - [x] Clear Terminal Support
-- [ ] ANSI Raw Mode Support and multiple screens
+- [x] ANSI Raw Mode Support
 - [ ] Keyboard Support
-- [ ] Event Handling
+- [ ] Multiple Screens
+- [ ] Polish up existing interface and add docs (0.0.1 release)
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
 - [ ] Positioning and Dynamic Resizing support
 - [ ] Custom Widgets with Component Traits
 - [ ] Font Sizes
+- [ ] Mouse Support
+- [ ] TBD
 
 ## What isn't it?
 
