@@ -11,6 +11,7 @@
 //    let handle = thread::spawn(move || {
 //        let mut term = term.lock().unwrap();
 //        for k in term.keys() {
+//            let k = k.lock().unwrap();
 //            handle_key(k);
 //        }
 //    });
@@ -38,7 +39,7 @@ fn main() {
         let k = k.unwrap();
         my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
 
-        println!("{:?}", key::from_char(k as char));
+        println!("{:?}", key::from_byte(k));
 
         if let 3 = k {
             process::exit(1);

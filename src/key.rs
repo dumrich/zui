@@ -33,10 +33,11 @@ pub enum Keys {
     F(u8),
     /// Normal character.
     Char(char),
+    // Number
+    Num(u8),
     /// Alt modified character.
     Alt(char),
     /// Ctrl modified character.
-    ///
     /// Note that certain keys may not be modifiable with `ctrl`, due to limitations of terminals.
     Ctrl(char),
     /// Null byte.
@@ -45,10 +46,24 @@ pub enum Keys {
     Esc,
 }
 
-pub fn from_char(c: char) -> Option<Keys> {
+pub fn from_byte(c: u8) -> Option<Keys> {
     if c.is_ascii() {
-        Some(Keys::Char(c))
+        let escape = false;
+        match c {
+            // Numbers
+            48..=57 => Some(Keys::Num(c - 48)),
+
+            // Alphabet
+            97..=122 => Some(Keys::Char(c as char)),
+
+            // Ctrl-Characters
+            1..=26 => Some(Keys::Ctrl((c + 96) as char)),
+
+            // Key not recognized, but user can parse it
+            _ => Some(Keys::Char(c as char)),
+        }
     } else {
+        println!("{}", c);
         None
     }
 }
