@@ -1,8 +1,9 @@
-// Key Enum definitions
+use std::io::{Bytes, Read};
 
-/// A key (Shamelessly Copied from Termion)
+// Key Enum definitions
+// A key (Shamefully Copied from Termion (How do I give credit!?))
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum Keys {
+pub enum Key {
     /// Backspace.
     Backspace,
     /// Left arrow.
@@ -46,24 +47,52 @@ pub enum Keys {
     Esc,
 }
 
-pub fn from_byte(c: u8) -> Option<Keys> {
-    if c.is_ascii() {
-        let escape = false;
-        match c {
-            // Numbers
-            48..=57 => Some(Keys::Num(c - 48)),
+pub struct KeyIterator<R: Read> {
+    bytes: Bytes<R>,
+}
 
-            // Alphabet
-            97..=122 => Some(Keys::Char(c as char)),
+pub trait Keys<R: Read> {
+    fn keys(self) -> KeyIterator<R>;
+}
 
-            // Ctrl-Characters
-            1..=26 => Some(Keys::Ctrl((c + 96) as char)),
+impl<R: Read> Iterator for KeyIterator<R> {
+    type Item = Key;
 
-            // Key not recognized, but user can parse it
-            _ => Some(Keys::Char(c as char)),
+    fn next(&mut self) -> Option<Key> {
+        from_byte(self.bytes.next())
+    }
+}
+
+impl<R: Read> Keys<R> for Bytes<R> {
+    fn keys(self) -> KeyIterator<R> {
+        KeyIterator { bytes: self }
+    }
+}
+
+fn from_byte(c: Option<Result<u8, std::io::Error>>) -> Option<Key> {
+    match c {
+        Some(c) => {
+            let c = c.unwrap();
+            if c.is_ascii() {
+                let escape = false;
+                match c {
+                    // Numbers
+                    48..=57 => Some(Key::Num(c - 48)),
+
+                    // Alphabet
+                    97..=122 => Some(Key::Char(c as char)),
+
+                    // Ctrl-Characters
+                    1..=26 => Some(Key::Ctrl((c + 96) as char)),
+
+                    // Key not recognized, but user can parse it
+                    _ => Some(Key::Char(c as char)),
+                }
+            } else {
+                println!("{}", c);
+                None
+            }
         }
-    } else {
-        println!("{}", c);
-        None
+        None => None,
     }
 }

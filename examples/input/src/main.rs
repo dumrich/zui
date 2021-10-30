@@ -22,7 +22,8 @@ use std::io::{self, Read};
 use std::process;
 use std::thread;
 use std::time::Duration;
-use zui::key;
+use zui::key::{Key, Keys};
+use zui::term::clear::TClear;
 use zui::term::cursor::TCursor;
 use zui::term::Terminal;
 
@@ -35,13 +36,13 @@ fn main() {
     thread::sleep(Duration::from_secs(2));
 
     let mut x: Vec<char> = Vec::new();
-    for k in stdin().bytes() {
-        let k = k.unwrap();
-        my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
+    for k in stdin().bytes().keys() {
+        my_term.set_cursor_to(1, my_term.y_pos).unwrap();
+        my_term.clear_line().unwrap();
 
-        println!("{:?}", key::from_byte(k));
+        println!("{:?}", k);
 
-        if let 3 = k {
+        if let Key::Ctrl('c') = k {
             process::exit(1);
         }
 
