@@ -1,8 +1,11 @@
-use std::io::{Bytes, Read};
+use std::{
+    io::{Error, Read},
+    sync::mpsc::Receiver,
+};
 
 // Key Enum definitions
 // A key (Shamefully Copied from Termion (How do I give credit!?))
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Key {
     /// Backspace.
     Backspace,
@@ -36,8 +39,6 @@ pub enum Key {
     Char(char),
     // Number
     Num(u8),
-    /// Alt modified character.
-    Alt(char),
     /// Ctrl modified character.
     /// Note that certain keys may not be modifiable with `ctrl`, due to limitations of terminals.
     Ctrl(char),
@@ -47,43 +48,60 @@ pub enum Key {
     Esc,
 }
 
-pub struct KeyIterator<R: Read> {
-    bytes: Bytes<R>,
+pub struct KeyIterator {
+    bytes: Receiver<Result<u8, Error>>,
 }
 
-pub trait Keys<R: Read> {
-    fn keys(self) -> KeyIterator<R>;
+impl KeyIterator {
+    pub fn from(rx: Receiver<Result<u8, Error>>) -> KeyIterator {
+        KeyIterator { bytes: rx }
+    }
 }
 
-impl<R: Read> Iterator for KeyIterator<R> {
+impl Iterator for KeyIterator {
     type Item = Key;
 
     fn next(&mut self) -> Option<Key> {
-        from_byte(self.bytes.next())
+        from_byte(&mut self.bytes)
     }
 }
 
-impl<R: Read> Keys<R> for Bytes<R> {
-    fn keys(self) -> KeyIterator<R> {
-        KeyIterator { bytes: self }
-    }
-}
-
-fn from_byte(c: Option<Result<u8, std::io::Error>>) -> Option<Key> {
+fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
+    let c = i.recv();
     match c {
-        Some(c) => {
+        Ok(c) => {
             let c = c.unwrap();
             if c.is_ascii() {
-                let escape = false;
                 match c {
+                    // Ctrl-Characters
+                    1..=26 => Some(Key::Ctrl((c + 96) as char)),
+
+                    // Escape Sequences... AKA Hard Part
+                    27 => {
+                        match i.recv().unwrap() {
+                            Ok(x) => match x as char {
+                                // F1-F4
+                                'O' => match i.try_recv().unwrap() {
+                                    Ok(r) => match r as char {
+                                        'P' => Some(Key::F(1)),
+                                        'Q' => Some(Key::F(2)),
+                                        'R' => Some(Key::F(3)),
+                                        'S' => Some(Key::F(4)),
+                                        _ => Some(Key::Char(c as char)),
+                                    },
+                                    Err(e) => Some(Key::Esc),
+                                },
+                                _ => Some(Key::Esc),
+                            },
+                            Err(e) => Some(Key::Esc),
+                        }
+                    }
+
                     // Numbers
                     48..=57 => Some(Key::Num(c - 48)),
 
                     // Alphabet
                     97..=122 => Some(Key::Char(c as char)),
-
-                    // Ctrl-Characters
-                    1..=26 => Some(Key::Ctrl((c + 96) as char)),
 
                     // Key not recognized, but user can parse it
                     _ => Some(Key::Char(c as char)),
@@ -93,6 +111,6 @@ fn from_byte(c: Option<Result<u8, std::io::Error>>) -> Option<Key> {
                 None
             }
         }
-        None => None,
+        Err(c) => Some(Key::Null),
     }
 }

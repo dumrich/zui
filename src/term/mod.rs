@@ -4,16 +4,21 @@ pub mod cursor;
 mod sys;
 
 // Imports
+use crate::key::{Key, KeyIterator};
 use crate::term::clear::TClear;
 use crate::term::cursor::{Cursor, TCursor};
 use std::fmt::Debug;
-use std::io::{self, Write};
+use std::io::{self, Error, Read, Stdin, Write};
+use std::sync::mpsc;
+use std::sync::Arc;
+use std::thread::{self, JoinHandle};
 use sys::{get_attr, set_attr, set_raw, Termios};
 
 pub enum TermMode {
     Cannonical,
     Raw,
 }
+
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
@@ -80,6 +85,24 @@ impl<'a, T: Write> Terminal<'a, T> {
         self.mode = TermMode::Raw;
 
         Ok(())
+    }
+
+    fn async_stdin(&self, d: Stdin) -> (JoinHandle<()>, mpsc::Receiver<Result<u8, Error>>) {
+        let (tx, rx) = mpsc::channel();
+
+        let handle = thread::spawn(move || {
+            for b in d.bytes() {
+                tx.send(b).unwrap();
+            }
+        });
+
+        (handle, rx)
+    }
+
+    pub fn keys(&self, stdin: Stdin) -> KeyIterator {
+        let (handle, rx) = self.async_stdin(stdin);
+
+        KeyIterator::from(rx)
     }
 }
 

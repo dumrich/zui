@@ -14,7 +14,7 @@ It's goals are as follows:
 - [x] Cursor Support
 - [x] Clear Terminal Support
 - [x] ANSI Raw Mode Support
-- [ ] Keyboard Support
+- [ ] Keyboard Support & async stdin
 - [ ] Multiple Screens
 - [ ] Polish up existing interface and add docs (0.0.1 release)
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
@@ -22,7 +22,6 @@ It's goals are as follows:
 - [ ] Custom Widgets with Component Traits
 - [ ] Font Sizes
 - [ ] Mouse Support
-- [ ] TBD
 
 ## What isn't it?
 
