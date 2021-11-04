@@ -6,6 +6,10 @@ use std::{io::Error, rc::Rc, sync::mpsc::Receiver, thread, time::Duration};
 pub enum Key {
     /// Backspace.
     Backspace,
+    /// Enter.
+    Enter,
+    /// Tab.
+    Tab,
     /// Left arrow.
     Left,
     /// Right arrow.
@@ -73,12 +77,18 @@ fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
             if c.is_ascii() {
                 match c {
                     // Ctrl-Characters
-                    1..=26 => Some(Key::Ctrl((c + 96) as char)),
+                    1..=8 => Some(Key::Ctrl((c + 96) as char)),
 
+                    10..=12 => Some(Key::Ctrl((c + 96) as char)),
+
+                    14..=26 => Some(Key::Ctrl((c + 96) as char)),
+
+                    13 => Some(Key::Enter),
+                    9 => Some(Key::Tab),
                     // Escape Sequences... AKA Hard Part
                     27 => {
                         //TODO: Fix this delay of the main thread (maybe relegate basic processing to spawn)
-                        thread::sleep(Duration::from_millis(1));
+                        thread::sleep(Duration::from_millis(2));
                         match i.try_recv() {
                             Ok(x) => {
                                 match x {
@@ -93,7 +103,16 @@ fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
                                         },
                                         Err(e) => Some(Key::Null),
                                     },
-
+                                    Ok(91) => match i.try_recv().unwrap() {
+                                        Ok(r) => match r {
+                                            65 => Some(Key::Up),
+                                            66 => Some(Key::Down),
+                                            67 => Some(Key::Right),
+                                            68 => Some(Key::Left),
+                                            _ => Some(Key::Char(r as char)),
+                                        },
+                                        Err(e) => Some(Key::Null),
+                                    },
                                     Ok(97..=122) => Some(Key::Alt(x.unwrap() as char)),
                                     _ => Some(Key::Null),
                                 }
@@ -107,6 +126,7 @@ fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
 
                     // Alphabet
                     97..=122 => Some(Key::Char(c as char)),
+                    127 => Some(Key::Backspace),
 
                     // Key not recognized, but user can parse it
                     _ => Some(Key::Char(c as char)),
