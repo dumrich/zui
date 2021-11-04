@@ -3,7 +3,7 @@
 //! # Example
 //!
 //! ```rust
-//! use zui::style;
+//! use zui::style::{self, Style};
 //!
 //! fn main() {
 //!      println!("{}Printed in Bold{}", style::set(Style::Bold), style::set(Style::Reset));

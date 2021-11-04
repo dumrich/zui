@@ -1,20 +1,23 @@
 //! # Clear Screen Methods
 //!
-//! ## Example
-//!
-//! ```rust
-//! use zui::term::Terminal;
-//! use zui::term::clear::TClear;
-//!
-//! fn main() {
-//!      terminal.clear_screen().unwrap();
-//!      terminal.clear_below_cursor().unwrap();
-//!      terminal.clear_above_cursor().unwrap();
-//!      terminal.clear_line().unwrap();
-//!
-//! }
-//! ```
-//!
+// ## Example
+//
+// ```rust
+// use zui::term::Terminal;
+// use zui::term::clear::TClear;
+//
+// fn main() {
+//     let mut stdout = io::stdout();
+//     let mut terminal = Terminal::new(&mut stdout).unwrap();
+//
+//     terminal.clear_screen().unwrap();
+//     terminal.clear_below_cursor().unwrap();
+//     terminal.clear_above_cursor().unwrap();
+//     terminal.clear_line().unwrap();
+//
+// }
+// ```
+//
 // Author: Abhinav Chavali
 // Date: October 8th, 2021
 // Updated: October 13th, 2021

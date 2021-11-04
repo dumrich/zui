@@ -1,6 +1,6 @@
 // Integration tests for terminal module
 
-use std::io::{self, Write};
+use std::io;
 // use std::thread;
 // use std::time::Duration;
 use zui::term::Terminal;
@@ -8,13 +8,13 @@ use zui::term::Terminal;
 #[test]
 fn create_terminal() {
     let mut output = io::stdout();
-    let my_term = Terminal::new(&mut output).unwrap();
+    let _my_term = Terminal::new(&mut output).unwrap();
 }
 
 #[test]
 fn test_terminal_size() {
     let mut output = io::stdout();
-    let mut my_term = Terminal::new(&mut output).unwrap();
+    let my_term = Terminal::new(&mut output).unwrap();
     println!("{:?}", &my_term);
     assert!(my_term.rel_size.1 > 0);
 }

@@ -1,26 +1,29 @@
 //! # Cursor manipulation in the terminal
 //!
-//! ## Example
-//!
-//! ```rust
-//! use zui::term::Terminal;
-//! use zui::term::cursor::TCursor;
-//!
-//! fn main() {
-//!     terminal.set_cursor(4: u16, 29: u16).unwrap();
-//!
-//!     terminal.show_cursor().unwrap();
-//!     terminal.hide_cursor().unwrap();
-//!
-//!     terminal.blinking_block().unwrap();
-//!     terminal.steady_block().unwrap();
-//!     terminal.blinking_underline().unwrap();
-//!     terminal.steady_underline().unwrap();
-//!     terminal.blinking_bar().unwrap();
-//!     terminal.steady_bar().unwrap();
-//! }
-//! ```
-//!
+// ## Example
+//
+// ```rust
+// use zui::term::Terminal;
+// use zui::term::cursor::TCursor;
+// use std::io;
+//
+// fn main() {
+//     let mut stdout = io::stdout();
+//     let mut terminal = Terminal::new(&mut stdout).unwrap();
+//     terminal.set_cursor_to(1, 1).unwrap();
+//
+//     terminal.show_cursor().unwrap();
+//     terminal.hide_cursor().unwrap();
+//
+//     terminal.blinking_block().unwrap();
+//     terminal.steady_block().unwrap();
+//     terminal.blinking_underline().unwrap();
+//     terminal.steady_underline().unwrap();
+//     terminal.blinking_bar().unwrap();
+//     terminal.steady_bar().unwrap();
+// }
+// ```
+//
 // Author: Abhinav Chavali
 // Date: October 8th, 2021
 // Updated: October 13th, 2021

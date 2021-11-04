@@ -3,11 +3,11 @@
 //! ## Example
 //!
 //! ```rust
-//! use zui::color;
+//! use zui::color::{self, Color};
 //!
 //! fn main() {
-//!      println!("{}Printed in Red{}", color::Fg(Color::Red), color::Fg(Color::Reset));
-//!      println!("{}Printed in Red{}", color::Bg(Color::Red), color::Bg(Color::Reset));
+//!      println!("{}Printed in Red{}", color::fg(Color::Red), color::fg(Color::Reset));
+//!      println!("{}Printed in Red{}", color::bg(Color::Red), color::bg(Color::Reset));
 //! }
 //! ```
 // Author: Abhinav Chavali
