@@ -1,5 +1,5 @@
 #![warn(clippy::all, clippy::cargo)]
-#![allow(dead_code)]
+#![allow(clippy::should_implement_trait)]
 // Define Modules
 pub mod color;
 pub mod key;

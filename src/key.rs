@@ -123,8 +123,9 @@ fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
                     // Alphabet
                     127 => Some(Key::Backspace),
 
-                    97..=122 | _ => Some(Key::Char(c as char)),
+                    97..=122 => Some(Key::Char(c as char)),
                     // Key not recognized, but user can parse it
+                    _ => Some(Key::Char(c as char)),
                 }
             } else {
                 println!("{}", c);

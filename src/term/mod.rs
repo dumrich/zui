@@ -51,7 +51,7 @@ impl<T: Write> Drop for Terminal<'_, T> {
 }
 
 impl<'a, T: Write> Terminal<'a, T> {
-    pub fn new(stdout: &'a mut T) -> Result<Terminal<T>, ()> {
+    pub fn new(stdout: &'a mut T) -> Result<Terminal<T>, Error> {
         let (rel_size, pix_size) = sys::term_size();
 
         Ok(Terminal {
