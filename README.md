@@ -16,7 +16,7 @@ It's goals are as follows:
 - [x] ANSI Raw Mode Support
 - [x] Keyboard Support & async stdin
 - [x] Multiple Screens
-- [ ] Polish up existing interface and add docs (0.0.1 release)
+- [x] Polish up existing interface and add docs (0.0.1 release)
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
 - [ ] Positioning and Dynamic Resizing support
 - [ ] Custom Widgets with Component Traits
