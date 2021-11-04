@@ -12,7 +12,7 @@ fn main() {
     let mut my_term = Terminal::new(&mut output).unwrap();
 
     // Test clearing the screen
-    my_term.clear_screen().unwrap();
+    my_term.switch_screen().unwrap();
     println!(
         "{}Wassup I'm red {}{} Now I'm bold!{}",
         color::fg(Color::Red),
