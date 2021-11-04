@@ -4,14 +4,13 @@ pub mod cursor;
 mod sys;
 
 // Imports
-use crate::key::{Key, KeyIterator};
+use crate::key::KeyIterator;
 use crate::term::clear::TClear;
 use crate::term::cursor::{Cursor, TCursor};
 use std::fmt::Debug;
 use std::io::{self, Error, Read, Stdin, Write};
 use std::sync::mpsc;
-use std::sync::Arc;
-use std::thread::{self, JoinHandle};
+use std::thread;
 use sys::{get_attr, set_attr, set_raw, Termios};
 
 pub enum TermMode {
@@ -53,7 +52,7 @@ impl<T: Write> Drop for Terminal<'_, T> {
 
 impl<'a, T: Write> Terminal<'a, T> {
     pub fn new(stdout: &'a mut T) -> Result<Terminal<T>, ()> {
-        let (rel_size, pix_size) = sys::term_size()?;
+        let (rel_size, pix_size) = sys::term_size();
 
         Ok(Terminal {
             rel_size,
@@ -69,14 +68,14 @@ impl<'a, T: Write> Terminal<'a, T> {
     }
 
     pub fn size_did_change(&mut self) -> bool {
-        let (rel_size, pix_size) = sys::term_size().unwrap(); // TODO: Fix
+        let (rel_size, pix_size) = sys::term_size();
 
-        if rel_size != (self.rel_size) {
+        if rel_size == (self.rel_size) {
+            false
+        } else {
             self.rel_size = rel_size;
             self.pix_size = pix_size;
             true
-        } else {
-            false
         }
     }
 
@@ -91,21 +90,9 @@ impl<'a, T: Write> Terminal<'a, T> {
         Ok(())
     }
 
-    fn async_stdin(&self, d: Stdin) -> (JoinHandle<()>, mpsc::Receiver<Result<u8, Error>>) {
-        let (tx, rx) = mpsc::channel();
-
-        let handle = thread::spawn(move || {
-            for b in d.bytes() {
-                tx.send(b).unwrap();
-            }
-        });
-
-        (handle, rx)
-    }
-
     // TODO: Move this shit to a trait
     pub fn keys(&self, stdin: Stdin) -> KeyIterator {
-        let (handle, rx) = self.async_stdin(stdin);
+        let rx = async_stdin(stdin);
 
         KeyIterator::from(rx)
     }
@@ -119,6 +106,18 @@ impl<'a, T: Write> Terminal<'a, T> {
         self.screen_num = 0;
         write!(self.stdout, "\u{001b}[?1049l")
     }
+}
+
+fn async_stdin(d: Stdin) -> mpsc::Receiver<Result<u8, Error>> {
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        for b in d.bytes() {
+            tx.send(b).unwrap();
+        }
+    });
+
+    rx
 }
 
 // Cursor Methods

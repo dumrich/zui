@@ -1,4 +1,4 @@
-#![warn(clippy::all, clippy::pedantic, clippy::cargo)]
+#![warn(clippy::all, clippy::cargo)]
 #![allow(dead_code)]
 // Define Modules
 pub mod color;

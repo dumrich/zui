@@ -17,11 +17,8 @@
 //    });
 //}
 
-use std::io::stdin;
-use std::io::{self, Read};
+use std::io;
 use std::process;
-use std::thread;
-use std::time::Duration;
 use zui::key::Key;
 use zui::term::clear::TClear;
 use zui::term::cursor::TCursor;

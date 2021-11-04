@@ -1,9 +1,14 @@
 [package]
 name = "zui"
 version = "0.1.0"
+repository = "https://git.dumrich.com/zui/"
 edition = "2018"
+description = "A Terminal UI Library, Written in Rust"
+license = "GPL 3"
+keywords = ["terminal", "ui", "ansi", "escape", "tui"]
+categories = ["command-line-interface", "graphics"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libc = "*"
+libc = "0.2"

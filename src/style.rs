@@ -31,7 +31,7 @@ pub enum Style {
     Reset,
 }
 
-use Style::*;
+use Style::{Blinking, Bold, Italic, Reset, Strike, Underline};
 
 fn derive_style(style: Style) -> &'static str {
     match style {
@@ -51,7 +51,7 @@ pub fn set(style: Style) -> Ansi {
 #[cfg(test)]
 mod tests {
     use crate::style::set;
-    use crate::style::Style::{Blinking, Bold, Italic, Reset, Strike, Underline};
+    use crate::style::Style::{Bold, Italic, Reset, Strike};
 
     #[test]
     fn test_styling() {

@@ -21,20 +21,22 @@ extern "C" {
 }
 
 type Size = ((u16, u16), (u16, u16));
-pub fn term_size() -> Result<Size, ()> {
+pub fn term_size() -> Size {
     let mut size: WinSize;
     unsafe {
         size = core::mem::zeroed();
 
-        if ioctl(1, TIOCGWINSZ.into(), &mut size) == -1 {
-            panic!("Could not determine terminal size.");
-        }
-        if OS == "windows" {
-            panic!("How many times must I remind you not to use Windows, huh?")
-        }
+        assert!(
+            !(ioctl(1, TIOCGWINSZ, &mut size) == -1),
+            "Could not determine terminal size."
+        );
+        assert!(
+            !(OS == "windows"),
+            "How many times must I remind you not to use Windows, huh?"
+        );
     }
 
-    Ok(((size.ws_col, size.ws_row), (size.ws_xpixel, size.ws_ypixel)))
+    ((size.ws_col, size.ws_row), (size.ws_xpixel, size.ws_ypixel))
 }
 
 // Enter Raw mode

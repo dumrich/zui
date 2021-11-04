@@ -1,4 +1,4 @@
-use std::io::{self, Write};
+use std::io;
 use std::thread;
 use std::time::Duration;
 use zui::color::{self, Color};
