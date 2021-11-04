@@ -1,7 +1,4 @@
-use std::{
-    io::{Error, Read},
-    sync::mpsc::Receiver,
-};
+use std::{io::Error, rc::Rc, sync::mpsc::Receiver, thread, time::Duration};
 
 // Key Enum definitions
 // A key (Shamefully Copied from Termion (How do I give credit!?))
@@ -42,6 +39,8 @@ pub enum Key {
     /// Ctrl modified character.
     /// Note that certain keys may not be modifiable with `ctrl`, due to limitations of terminals.
     Ctrl(char),
+    // Alt modified character
+    Alt(char),
     /// Null byte.
     Null,
     /// Esc key.
@@ -78,21 +77,27 @@ fn from_byte(i: &mut Receiver<Result<u8, Error>>) -> Option<Key> {
 
                     // Escape Sequences... AKA Hard Part
                     27 => {
-                        match i.recv().unwrap() {
-                            Ok(x) => match x as char {
-                                // F1-F4
-                                'O' => match i.try_recv().unwrap() {
-                                    Ok(r) => match r as char {
-                                        'P' => Some(Key::F(1)),
-                                        'Q' => Some(Key::F(2)),
-                                        'R' => Some(Key::F(3)),
-                                        'S' => Some(Key::F(4)),
-                                        _ => Some(Key::Char(c as char)),
+                        //TODO: Fix this delay of the main thread (maybe relegate basic processing to spawn)
+                        thread::sleep(Duration::from_millis(1));
+                        match i.try_recv() {
+                            Ok(x) => {
+                                match x {
+                                    // F1-F4
+                                    Ok(79) => match i.try_recv().unwrap() {
+                                        Ok(r) => match r as char {
+                                            'P' => Some(Key::F(1)),
+                                            'Q' => Some(Key::F(2)),
+                                            'R' => Some(Key::F(3)),
+                                            'S' => Some(Key::F(4)),
+                                            _ => Some(Key::Char(r as char)),
+                                        },
+                                        Err(e) => Some(Key::Null),
                                     },
-                                    Err(e) => Some(Key::Esc),
-                                },
-                                _ => Some(Key::Esc),
-                            },
+
+                                    Ok(97..=122) => Some(Key::Alt(x.unwrap() as char)),
+                                    _ => Some(Key::Null),
+                                }
+                            }
                             Err(e) => Some(Key::Esc),
                         }
                     }

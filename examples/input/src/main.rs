@@ -33,7 +33,6 @@ fn main() {
 
     my_term.enter_raw_mode().unwrap();
 
-    let mut x: Vec<char> = Vec::new();
     for k in my_term.keys(io::stdin()) {
         my_term.set_cursor_to(1, my_term.y_pos).unwrap();
         my_term.clear_line().unwrap();
@@ -43,7 +42,16 @@ fn main() {
         if let Key::Ctrl('c') = k {
             process::exit(1);
         }
-
-        x.clear();
     }
+
+    //for k in io::stdin().bytes() {
+    //    my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
+    //    my_term.clear_line().unwrap();
+
+    //    println!("{:?}", k);
+
+    //    if let Ok(3) = k {
+    //        process::exit(1);
+    //    }
+    //}
 }

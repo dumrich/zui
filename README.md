@@ -14,7 +14,7 @@ It's goals are as follows:
 - [x] Cursor Support
 - [x] Clear Terminal Support
 - [x] ANSI Raw Mode Support
-- [ ] Keyboard Support & async stdin
+- [x] Keyboard Support & async stdin
 - [ ] Multiple Screens
 - [ ] Polish up existing interface and add docs (0.0.1 release)
 - [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
