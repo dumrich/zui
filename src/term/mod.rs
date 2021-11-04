@@ -1,3 +1,21 @@
+//! # Abstraction over the terminal
+//! How the terminal should be handled. Controls stuff like:
+//! - Clearing the Screen
+//! - Moving the Cursor
+//! - Getting the size of screen, and detecting a change
+//! - Entering raw mode
+//! - Getting keys
+//! - Switching screen
+//!
+//! In short, for most applications, the majority of the work will be done here.
+//!
+//! ## Example
+//! Go to <https://git.dumrich.com/zui/tree/examples>
+//!
+// Author: Abhinav Chavali
+// Date: October 6th, 2021
+// Updated: October 6th, 2021
+
 // Declarations
 pub mod clear;
 pub mod cursor;
@@ -13,11 +31,13 @@ use std::sync::mpsc;
 use std::thread;
 use sys::{get_attr, set_attr, set_raw, Termios};
 
+/// Two possible modes for terminal: Cannonical and Raw
 pub enum TermMode {
     Cannonical,
     Raw,
 }
 
+/// Terminal control struct
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),

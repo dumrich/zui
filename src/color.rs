@@ -1,13 +1,15 @@
-// Color in the terminal
-//
-// # Example
-//
-// use zui::color;
-//
-// fn main() {
-//      println!("{}Printed in Red{}", color::Fg(Color::Red), color::Fg(Color::Reset));
-//      println!("{}Printed in Red{}", color::Bg(Color::Red), color::Bg(Color::Reset));
-// }
+//! # Color in the terminal
+//!
+//! ## Example
+//!
+//! ```rust
+//! use zui::color;
+//!
+//! fn main() {
+//!      println!("{}Printed in Red{}", color::Fg(Color::Red), color::Fg(Color::Reset));
+//!      println!("{}Printed in Red{}", color::Bg(Color::Red), color::Bg(Color::Reset));
+//! }
+//! ```
 // Author: Abhinav Chavali
 // Date: October 6th, 2021
 // Updated: October 6th, 2021
@@ -16,6 +18,7 @@
 use crate::Ansi;
 
 // Color Options
+/// Color Options
 #[derive(Copy, Clone)]
 pub enum Color {
     Black,
@@ -81,10 +84,12 @@ fn derive_color_bg(color: Color) -> &'static str {
     }
 }
 
+/// Set text foreground color
 pub fn fg(color: Color) -> Ansi {
     Ansi::from_str(derive_color_fg(color))
 }
 
+/// Set text background color
 pub fn bg(color: Color) -> Ansi {
     Ansi::from_str(derive_color_bg(color))
 }

@@ -1,18 +1,18 @@
-// Text Styling in the terminal
-//
-// # Example
-//
-// ```rust
-// use zui::style;
-//
-// fn main() {
-//      println!("{}Printed in Bold{}", style::set(Style::Bold), style::set(Style::Reset));
-//      println!("{}Printed in Italic{}", style::set(Style::Italic), style::set(Style::Reset));
-//      println!("{}Printed in Underline{}", style::set(Style::Underline), style::set(Style::Reset));
-//      println!("{}Printed in Strikethrough{}", style::set(Style::Strike), style::set(Style::Reset));
-// }
-// ```
-//
+//! Text Styling in the terminal
+//!
+//! # Example
+//!
+//! ```rust
+//! use zui::style;
+//!
+//! fn main() {
+//!      println!("{}Printed in Bold{}", style::set(Style::Bold), style::set(Style::Reset));
+//!      println!("{}Printed in Italic{}", style::set(Style::Italic), style::set(Style::Reset));
+//!      println!("{}Printed in Underline{}", style::set(Style::Underline), style::set(Style::Reset));
+//!      println!("{}Printed in Strikethrough{}", style::set(Style::Strike), style::set(Style::Reset));
+//! }
+//! ```
+//!
 // Author: Abhinav Chavali
 // Date: October 7th, 2021
 // Updated: October 7th, 2021
@@ -20,7 +20,7 @@
 // Imports
 use crate::Ansi;
 
-// Define style options
+/// Define style options
 #[derive(Copy, Clone)]
 pub enum Style {
     Bold,
@@ -44,6 +44,7 @@ fn derive_style(style: Style) -> &'static str {
     }
 }
 
+/// Set terminal style
 pub fn set(style: Style) -> Ansi {
     Ansi::from_str(derive_style(style))
 }

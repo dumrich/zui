@@ -1,26 +1,26 @@
-// Cursor manipulation in the terminal
-//
-// # Example
-//
-// ```rust
-// use zui::term::Terminal;
-// use zui::term::cursor::TCursor;
-//
-// fn main() {
-//     terminal.set_cursor(4: u16, 29: u16).unwrap();
-//
-//     terminal.show_cursor().unwrap();
-//     terminal.hide_cursor().unwrap();
-//
-//     terminal.blinking_block().unwrap();
-//     terminal.steady_block().unwrap();
-//     terminal.blinking_underline().unwrap();
-//     terminal.steady_underline().unwrap();
-//     terminal.blinking_bar().unwrap();
-//     terminal.steady_bar().unwrap();
-// }
-// ```
-//
+//! # Cursor manipulation in the terminal
+//!
+//! ## Example
+//!
+//! ```rust
+//! use zui::term::Terminal;
+//! use zui::term::cursor::TCursor;
+//!
+//! fn main() {
+//!     terminal.set_cursor(4: u16, 29: u16).unwrap();
+//!
+//!     terminal.show_cursor().unwrap();
+//!     terminal.hide_cursor().unwrap();
+//!
+//!     terminal.blinking_block().unwrap();
+//!     terminal.steady_block().unwrap();
+//!     terminal.blinking_underline().unwrap();
+//!     terminal.steady_underline().unwrap();
+//!     terminal.blinking_bar().unwrap();
+//!     terminal.steady_bar().unwrap();
+//! }
+//! ```
+//!
 // Author: Abhinav Chavali
 // Date: October 8th, 2021
 // Updated: October 13th, 2021
@@ -28,6 +28,7 @@
 // imports
 use std::io;
 
+/// Cursor states
 #[derive(Debug)]
 pub enum Cursor {
     Default,
@@ -41,6 +42,7 @@ pub enum Cursor {
 }
 
 type IoResult = io::Result<()>;
+/// Cursor methods (implemented on Terminal)
 pub trait TCursor {
     fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> IoResult;
 
