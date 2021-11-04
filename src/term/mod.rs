@@ -26,6 +26,7 @@ pub struct Terminal<'a, T: Write> {
     pub x_pos: u16,
     pub y_pos: u16,
     pub cursor_mode: Cursor,
+    pub screen_num: u8,
     pub mode: TermMode,
     prev_ios: Termios,
 }
@@ -45,6 +46,8 @@ impl<T: Write> Drop for Terminal<'_, T> {
     fn drop(&mut self) {
         set_attr(&mut self.prev_ios);
         self.mode = TermMode::Cannonical;
+        self.screen_num = 0;
+        write!(self.stdout, "\u{001b}[?1049l").unwrap();
     }
 }
 
@@ -59,6 +62,7 @@ impl<'a, T: Write> Terminal<'a, T> {
             x_pos: 0,
             y_pos: 0,
             cursor_mode: Cursor::Default,
+            screen_num: 0,
             mode: TermMode::Cannonical,
             prev_ios: get_attr(),
         })
@@ -99,10 +103,21 @@ impl<'a, T: Write> Terminal<'a, T> {
         (handle, rx)
     }
 
+    // TODO: Move this shit to a trait
     pub fn keys(&self, stdin: Stdin) -> KeyIterator {
         let (handle, rx) = self.async_stdin(stdin);
 
         KeyIterator::from(rx)
+    }
+
+    pub fn switch_screen(&mut self) -> io::Result<()> {
+        self.screen_num = 1;
+        write!(self.stdout, "\u{001b}[?1049h")
+    }
+
+    pub fn switch_main(&mut self) -> io::Result<()> {
+        self.screen_num = 0;
+        write!(self.stdout, "\u{001b}[?1049l")
     }
 }
 
