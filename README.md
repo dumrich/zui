@@ -17,10 +17,6 @@ It's goals are as follows:
 - [x] Keyboard Support & async stdin
 - [x] Multiple Screens
 - [x] Polish up existing interface and add docs (0.0.1 release)
-- [ ] Widget Support (Blocks, lists, tabs, tables, paragraphs, etc.)
-- [ ] Positioning and Dynamic Resizing support
-- [ ] Custom Widgets with Component Traits
-- [ ] Font Sizes
 - [ ] Mouse Support
 
 ## What isn't it?
