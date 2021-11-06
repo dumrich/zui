@@ -41,7 +41,7 @@ pub enum TermMode {
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
-    stdout: &'a mut T,
+    pub stdout: &'a mut T,
     pub x_pos: u16,
     pub y_pos: u16,
     pub cursor_mode: Cursor,
