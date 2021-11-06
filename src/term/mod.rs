@@ -154,6 +154,10 @@ impl<T: Write> TCursor for Terminal<'_, T> {
         }
     }
 
+    fn get_cursor(&mut self) -> io::Result<(u16, u16)> {
+        Ok((self.x_pos, self.y_pos))
+    }
+
     fn show_cursor(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Default;
         let result = write!(self.stdout, "\u{001b}[?25h")?;
