@@ -1,28 +1,9 @@
-//use std::io;
-//use std::sync::{Arc, Mutex};
-//use std::thread;
-//use zui::key;
-//
-//fn main() {
-//    let mut output = io::stdout();
-//    let my_term = Arc::new(Mutex::new(Terminal::new(&mut output).unwrap()));
-//
-//    let term = Arc::clone(&my_term);
-//    let handle = thread::spawn(move || {
-//        let mut term = term.lock().unwrap();
-//        for k in term.keys() {
-//            let k = k.lock().unwrap();
-//            handle_key(k);
-//        }
-//    });
-//}
-
+use libzui::key::Key;
+use libzui::term::clear::TClear;
+use libzui::term::cursor::TCursor;
+use libzui::term::Terminal;
 use std::io;
 use std::process;
-use zui::key::Key;
-use zui::term::clear::TClear;
-use zui::term::cursor::TCursor;
-use zui::term::Terminal;
 
 fn main() {
     let mut output = io::stdout();

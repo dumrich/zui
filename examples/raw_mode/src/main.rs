@@ -1,10 +1,10 @@
+use libzui::term::cursor::TCursor;
+use libzui::term::Terminal;
 use std::io::stdin;
 use std::io::{self, Read};
 use std::process;
 use std::thread;
 use std::time::Duration;
-use zui::term::cursor::TCursor;
-use zui::term::Terminal;
 
 fn main() {
     let mut output = io::stdout();
