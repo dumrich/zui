@@ -37,6 +37,7 @@ pub enum Color {
     PurpleLight,
     CyanLight,
     WhiteLight,
+    RGB(u16, u16, u16),
     Reset,
 }
 
@@ -59,6 +60,7 @@ fn derive_color_fg(color: Color) -> &'static str {
         Color::PurpleLight => "\u{001b}[35;1m",
         Color::CyanLight => "\u{001b}[361;1m",
         Color::WhiteLight => "\u{001b}[37;1m",
+        _ => "",
     }
 }
 
@@ -81,17 +83,26 @@ fn derive_color_bg(color: Color) -> &'static str {
         Color::PurpleLight => "\u{001b}[45;1m",
         Color::CyanLight => "\u{001b}[461;1m",
         Color::WhiteLight => "\u{001b}[47;1m",
+        _ => "",
     }
 }
 
 /// Set text foreground color
 pub fn fg(color: Color) -> Ansi {
-    Ansi::from_str(derive_color_fg(color))
+    if let Color::RGB(x, y, z) = color {
+        Ansi::from_str(format!("\u{001b}[38;2;{};{};{}", x, y, z).to_string())
+    } else {
+        Ansi::from_str(derive_color_fg(color).to_string())
+    }
 }
 
 /// Set text background color
 pub fn bg(color: Color) -> Ansi {
-    Ansi::from_str(derive_color_bg(color))
+    if let Color::RGB(x, y, z) = color {
+        Ansi::from_str(format!("\u{001b}[48;2;{};{};{}", x, y, z).to_string())
+    } else {
+        Ansi::from_str(derive_color_bg(color).to_string())
+    }
 }
 
 #[cfg(test)]

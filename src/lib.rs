@@ -14,21 +14,20 @@ pub mod color;
 pub mod key;
 pub mod style;
 pub mod term;
-pub mod widgets;
 
 // Imports
 use std::fmt;
 
 // Define Ansi struct
 /// Define ANSI struct. Meant for private use
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Ansi {
-    pub value: &'static str,
+    pub value: String,
 }
 
 impl Ansi {
     // Associated method
-    pub fn from_str(input: &'static str) -> Ansi {
+    pub fn from_str(input: String) -> Ansi {
         Ansi { value: input }
     }
 }

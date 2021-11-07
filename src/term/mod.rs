@@ -22,7 +22,9 @@ pub mod cursor;
 mod sys;
 
 // Imports
+use crate::color::Color;
 use crate::key::KeyIterator;
+use crate::style::Style;
 use crate::term::clear::TClear;
 use crate::term::cursor::{Cursor, TCursor};
 use std::fmt::Debug;
@@ -126,6 +128,9 @@ impl<'a, T: Write> Terminal<'a, T> {
         self.screen_num = 0;
         write!(self.stdout, "\u{001b}[?1049l")
     }
+
+    /// Print to stdout
+    pub fn print(&mut self, x: u16, y: u16, sty: Style, fg: Color, bg: Color, s: &str) {}
 }
 
 fn async_stdin(d: Stdin) -> mpsc::Receiver<Result<u8, Error>> {
@@ -154,7 +159,7 @@ impl<T: Write> TCursor for Terminal<'_, T> {
         }
     }
 
-    fn get_cursor(&mut self) -> io::Result<(u16, u16)> {
+    fn get_cursor(&self) -> io::Result<(u16, u16)> {
         Ok((self.x_pos, self.y_pos))
     }
 

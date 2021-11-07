@@ -49,6 +49,8 @@ type IoResult = io::Result<()>;
 pub trait TCursor {
     fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> IoResult;
 
+    fn get_cursor(&self) -> io::Result<(u16, u16)>;
+
     fn show_cursor(&mut self) -> IoResult;
 
     fn hide_cursor(&mut self) -> IoResult;

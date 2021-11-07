@@ -46,7 +46,7 @@ fn derive_style(style: Style) -> &'static str {
 
 /// Set terminal style
 pub fn set(style: Style) -> Ansi {
-    Ansi::from_str(derive_style(style))
+    Ansi::from_str(derive_style(style).to_string())
 }
 
 #[cfg(test)]
