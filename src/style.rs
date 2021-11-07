@@ -32,9 +32,17 @@ pub enum Style {
     Blinking,
     Strike,
     Reset,
+    NoDim,
+    NoReverse,
+    NoInvisible,
+    NoBold,
+    NoItalic,
+    NoUnderline,
+    NoBlinking,
+    NoStrike,
 }
 
-use Style::{Blinking, Bold, Dim, Invisible, Italic, Reset, Reverse, Strike, Underline};
+use Style::*;
 
 fn derive_style(style: Style) -> &'static str {
     match style {
@@ -47,6 +55,14 @@ fn derive_style(style: Style) -> &'static str {
         Blinking => "\u{001b}[5m",
         Strike => "\u{001b}[9m",
         Reset => "\u{001b}[0m",
+        NoDim => "\u{001b}[22m",
+        NoReverse => "\u{001b}[27m",
+        NoInvisible => "\u{001b}[28m",
+        NoBold => "\u{001b}[22m",
+        NoItalic => "\u{001b}[23m",
+        NoUnderline => "\u{001b}[24m",
+        NoBlinking => "\u{001b}[25m",
+        NoStrike => "\u{001b}[29m",
     }
 }
 
