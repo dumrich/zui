@@ -23,6 +23,9 @@ use crate::Ansi;
 /// Define style options
 #[derive(Copy, Clone)]
 pub enum Style {
+    Dim,
+    Reverse,
+    Invisible,
     Bold,
     Italic,
     Underline,
@@ -31,10 +34,13 @@ pub enum Style {
     Reset,
 }
 
-use Style::{Blinking, Bold, Italic, Reset, Strike, Underline};
+use Style::{Blinking, Bold, Dim, Invisible, Italic, Reset, Reverse, Strike, Underline};
 
 fn derive_style(style: Style) -> &'static str {
     match style {
+        Dim => "\u{001b}[2m",
+        Reverse => "\u{001b}[7m",
+        Invisible => "\u{001b}[8m",
         Bold => "\u{001b}[1m",
         Italic => "\u{001b}[3m",
         Underline => "\u{001b}[4m",
