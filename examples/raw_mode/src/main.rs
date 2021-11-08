@@ -3,7 +3,6 @@ use std::io::{self, Read};
 use std::process;
 use std::thread;
 use std::time::Duration;
-use zui_core::term::cursor::TCursor;
 use zui_core::term::Terminal;
 
 fn main() {

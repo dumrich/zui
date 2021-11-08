@@ -3,7 +3,6 @@ use std::thread;
 use std::time::Duration;
 use zui_core::color::{self, Color};
 use zui_core::style;
-use zui_core::term::cursor::TCursor;
 use zui_core::term::Terminal;
 
 fn main() {

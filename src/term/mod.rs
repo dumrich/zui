@@ -17,7 +17,6 @@
 // Updated: October 6th, 2021
 
 // Declarations
-pub mod clear;
 pub mod cursor;
 mod sys;
 
@@ -25,8 +24,7 @@ mod sys;
 use crate::color::Color;
 use crate::key::KeyIterator;
 use crate::style::Style;
-use crate::term::clear::TClear;
-use crate::term::cursor::{Cursor, TCursor};
+use crate::term::cursor::Cursor;
 use std::fmt::Debug;
 use std::io::{self, Error, Read, Stdin, Write};
 use std::sync::mpsc;
@@ -43,7 +41,7 @@ pub enum TermMode {
 pub struct Terminal<'a, T: Write> {
     pub rel_size: (u16, u16),
     pub pix_size: (u16, u16),
-    pub stdout: &'a mut T,
+    pub stdout: &'a mut T, //TODO: Change to & and RefCell
     pub x_pos: u16,
     pub y_pos: u16,
     pub cursor_mode: Cursor,
@@ -128,9 +126,6 @@ impl<'a, T: Write> Terminal<'a, T> {
         self.screen_num = 0;
         write!(self.stdout, "\u{001b}[?1049l")
     }
-
-    /// Print to stdout
-    pub fn print(&mut self, x: u16, y: u16, sty: Style, fg: Color, bg: Color, s: &str) {}
 }
 
 fn async_stdin(d: Stdin) -> mpsc::Receiver<Result<u8, Error>> {
@@ -146,8 +141,8 @@ fn async_stdin(d: Stdin) -> mpsc::Receiver<Result<u8, Error>> {
 }
 
 // Cursor Methods
-impl<T: Write> TCursor for Terminal<'_, T> {
-    fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> io::Result<()> {
+impl<T: Write> Terminal<'_, T> {
+    pub fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> io::Result<()> {
         if x_pos <= self.rel_size.0 && y_pos <= self.rel_size.1 {
             let result = write!(self.stdout, "\u{001b}[{};{}f", y_pos, x_pos)?;
             self.stdout.flush().unwrap();
@@ -159,67 +154,67 @@ impl<T: Write> TCursor for Terminal<'_, T> {
         }
     }
 
-    fn get_cursor(&self) -> io::Result<(u16, u16)> {
+    pub fn get_cursor(&self) -> io::Result<(u16, u16)> {
         Ok((self.x_pos, self.y_pos))
     }
 
-    fn show_cursor(&mut self) -> io::Result<()> {
+    pub fn show_cursor(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Default;
         let result = write!(self.stdout, "\u{001b}[?25h")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn hide_cursor(&mut self) -> io::Result<()> {
+    pub fn hide_cursor(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Hidden;
         let result = write!(self.stdout, "\u{001b}[?25l")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn blinking_block(&mut self) -> io::Result<()> {
+    pub fn blinking_block(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::BlinkingBlock;
         let result = write!(self.stdout, "\u{001b}[1 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn steady_block(&mut self) -> io::Result<()> {
+    pub fn steady_block(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Block;
         let result = write!(self.stdout, "\u{001b}[2 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn blinking_underline(&mut self) -> io::Result<()> {
+    pub fn blinking_underline(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::BlinkingUnderline;
         let result = write!(self.stdout, "\u{001b}[3 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn steady_underline(&mut self) -> io::Result<()> {
+    pub fn steady_underline(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Underline;
         let result = write!(self.stdout, "\u{001b}[4 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn blinking_bar(&mut self) -> io::Result<()> {
+    pub fn blinking_bar(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::BlinkingBar;
         let result = write!(self.stdout, "\u{001b}[5 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn steady_bar(&mut self) -> io::Result<()> {
+    pub fn steady_bar(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Bar;
         let result = write!(self.stdout, "\u{001b}[6 q")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn reset_cursor(&mut self) -> io::Result<()> {
+    pub fn reset_cursor(&mut self) -> io::Result<()> {
         self.cursor_mode = Cursor::Default;
         let result = write!(self.stdout, "\u{001b}[0 q")?;
         self.stdout.flush().unwrap();
@@ -227,26 +222,26 @@ impl<T: Write> TCursor for Terminal<'_, T> {
     }
 }
 
-impl<T: Write> TClear for Terminal<'_, T> {
-    fn clear_screen(&mut self) -> io::Result<()> {
+impl<T: Write> Terminal<'_, T> {
+    pub fn clear_screen(&mut self) -> io::Result<()> {
         let result = write!(self.stdout, "\u{001b}[2J")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn clear_below_cursor(&mut self) -> io::Result<()> {
+    pub fn clear_below_cursor(&mut self) -> io::Result<()> {
         let result = write!(self.stdout, "\u{001b}[0J")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn clear_above_cursor(&mut self) -> io::Result<()> {
+    pub fn clear_above_cursor(&mut self) -> io::Result<()> {
         let result = write!(self.stdout, "\u{001b}[1J")?;
         self.stdout.flush().unwrap();
         Ok(result)
     }
 
-    fn clear_line(&mut self) -> io::Result<()> {
+    pub fn clear_line(&mut self) -> io::Result<()> {
         let result = write!(self.stdout, "\u{001b}[K")?;
         self.stdout.flush().unwrap();
         Ok(result)
