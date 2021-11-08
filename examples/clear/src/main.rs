@@ -1,10 +1,10 @@
-use libzui::color::{self, Color};
-use libzui::style;
-use libzui::term::clear::TClear;
-use libzui::term::Terminal;
 use std::io;
 use std::thread;
 use std::time::Duration;
+use zui_core::color::{self, Color};
+use zui_core::style;
+use zui_core::term::clear::TClear;
+use zui_core::term::Terminal;
 
 fn main() {
     // Create an example terminal

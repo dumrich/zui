@@ -1,9 +1,9 @@
-use libzui::key::Key;
-use libzui::term::clear::TClear;
-use libzui::term::cursor::TCursor;
-use libzui::term::Terminal;
 use std::io;
 use std::process;
+use zui_core::key::Key;
+use zui_core::term::clear::TClear;
+use zui_core::term::cursor::TCursor;
+use zui_core::term::Terminal;
 
 fn main() {
     let mut output = io::stdout();
