@@ -33,7 +33,7 @@ pub fn term_size() -> Size {
         assert!(
             !(OS == "windows"),
             "How many times must I remind you not to use Windows, huh?"
-        );
+        ); // Rid of this runtime check
     }
 
     ((size.ws_col, size.ws_row), (size.ws_xpixel, size.ws_ypixel))
