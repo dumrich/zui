@@ -1,10 +1,10 @@
 [package]
 name = "zui-core"
-version = "0.0.1"
+version = "0.0.2"
 repository = "https://git.dumrich.com/zui/"
 edition = "2018"
 description = "A Terminal UI Library, Written in Rust"
-license = "GPL-3.0"
+license = "MIT"
 keywords = ["terminal", "ui", "ansi", "escape", "tui"]
 categories = ["command-line-interface", "graphics"]
 
