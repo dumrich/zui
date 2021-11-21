@@ -21,9 +21,7 @@ pub mod cursor;
 mod sys;
 
 // Imports
-use crate::color::Color;
 use crate::key::KeyIterator;
-use crate::style::Style;
 use crate::term::cursor::Cursor;
 use std::fmt::Debug;
 use std::io::{self, Error, Read, Stdin, Write};
@@ -87,6 +85,10 @@ impl<'a, T: Write> Terminal<'a, T> {
         })
     }
 
+    pub fn print(&mut self, x: &str) -> io::Result<()> {
+        write!(self.stdout, "{}", x)
+    }
+
     pub fn size_did_change(&mut self) -> bool {
         let (rel_size, pix_size) = sys::term_size();
 
@@ -125,6 +127,14 @@ impl<'a, T: Write> Terminal<'a, T> {
     pub fn switch_main(&mut self) -> io::Result<()> {
         self.screen_num = 0;
         write!(self.stdout, "\u{001b}[?1049l")
+    }
+
+    pub fn get_size(&self) -> (u16, u16) {
+        self.rel_size
+    }
+
+    pub fn get_position(&self) -> (u16, u16) {
+        (self.x_pos, self.y_pos)
     }
 }
 
