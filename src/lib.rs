@@ -14,6 +14,7 @@ pub mod color;
 pub mod key;
 pub mod style;
 pub mod term;
+pub mod widgets;
 
 // Imports
 use std::fmt;

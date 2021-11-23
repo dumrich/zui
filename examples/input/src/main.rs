@@ -10,7 +10,8 @@ fn main() {
     my_term.enter_raw_mode().unwrap();
     my_term.switch_screen().unwrap();
 
-    for k in my_term.keys(io::stdin()) {
+    let keys1 = my_term.keys(io::stdin());
+    for k in keys1.clone() {
         my_term.set_cursor_to(1, my_term.y_pos).unwrap();
         my_term.clear_line().unwrap();
 
@@ -21,15 +22,4 @@ fn main() {
             process::exit(1);
         }
     }
-
-    //for k in io::stdin().bytes() {
-    //    my_term.set_cursor_to(1, my_term.y_pos + 1).unwrap();
-    //    my_term.clear_line().unwrap();
-
-    //    println!("{:?}", k);
-
-    //    if let Ok(3) = k {
-    //        process::exit(1);
-    //    }
-    //}
 }
