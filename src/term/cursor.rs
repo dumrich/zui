@@ -28,9 +28,6 @@
 // Date: October 8th, 2021
 // Updated: October 13th, 2021
 
-// imports
-use std::io;
-
 /// Cursor states
 #[derive(Debug)]
 pub enum Cursor {

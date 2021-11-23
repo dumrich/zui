@@ -12,3 +12,8 @@ categories = ["command-line-interface", "graphics"]
 
 [dependencies]
 libc = "0.2"
+crossbeam-channel = "0.5.1"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1

@@ -1,8 +1,9 @@
-use std::{io::Error, sync::mpsc::Receiver, thread, time::Duration};
+use crossbeam_channel::Receiver;
+use std::{io::Error, thread, time::Duration};
 
 // Key Enum definitions
 // A key (Shamefully Copied from Termion (How do I give credit!?))
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub enum Key {
     /// Backspace.
     Backspace,
@@ -51,6 +52,7 @@ pub enum Key {
     Esc,
 }
 
+#[derive(Clone, Debug)]
 pub struct KeyIterator {
     bytes: Receiver<Result<u8, Error>>,
 }

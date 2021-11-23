@@ -23,9 +23,9 @@ mod sys;
 // Imports
 use crate::key::KeyIterator;
 use crate::term::cursor::Cursor;
+use crossbeam_channel::unbounded;
 use std::fmt::Debug;
 use std::io::{self, Error, Read, Stdin, Write};
-use std::sync::mpsc;
 use std::thread;
 use sys::{get_attr, set_attr, set_raw, Termios};
 
@@ -138,8 +138,8 @@ impl<'a, T: Write> Terminal<'a, T> {
     }
 }
 
-fn async_stdin(d: Stdin) -> mpsc::Receiver<Result<u8, Error>> {
-    let (tx, rx) = mpsc::channel();
+fn async_stdin(d: Stdin) -> crossbeam_channel::Receiver<Result<u8, Error>> {
+    let (tx, rx) = unbounded();
 
     thread::spawn(move || {
         for b in d.bytes() {
