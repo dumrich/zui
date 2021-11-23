@@ -23,8 +23,6 @@ mod sys;
 // Imports
 use crate::key::KeyIterator;
 use crate::term::cursor::Cursor;
-use crate::widgets::popup::Popup;
-use crate::widgets::Widget;
 use crossbeam_channel::unbounded;
 use std::fmt::Debug;
 use std::io::{self, Error, Read, Stdin, Write};
