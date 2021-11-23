@@ -17,6 +17,8 @@ fn main() {
     ui(&mut my_term);
 
     thread::sleep(Duration::from_secs(9));
+
+    my_term.show_cursor().unwrap();
 }
 
 fn ui<T: Write>(term: &mut Terminal<T>) {
