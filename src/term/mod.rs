@@ -259,11 +259,3 @@ impl<T: Write> Terminal<'_, T> {
         Ok(result)
     }
 }
-
-impl<T: Write> Terminal<'_, T> {
-    pub fn block(&mut self) -> io::Result<()> {
-        let w = Popup::new(self);
-        w.render(self).unwrap();
-        Ok(())
-    }
-}
