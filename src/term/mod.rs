@@ -25,6 +25,7 @@ use crate::key::KeyIterator;
 use crate::term::cursor::Cursor;
 use crossbeam_channel::unbounded;
 use std::fmt::Debug;
+use std::fmt::Display;
 use std::io::{self, Error, Read, Stdin, Write};
 use std::thread;
 use sys::{get_attr, set_attr, set_raw, Termios};
@@ -85,7 +86,7 @@ impl<'a, T: Write> Terminal<'a, T> {
         })
     }
 
-    pub fn print(&mut self, x: &str) -> io::Result<()> {
+    pub fn print(&mut self, x: impl Display) -> io::Result<()> {
         write!(self.stdout, "{}", x)
     }
 
