@@ -32,13 +32,13 @@ use crate::term::Terminal;
 use std::io::Write;
 
 pub struct Popup {
-    title: &'static str,
-    height: u16,
-    width: u16,
-    x_offset: u16,
-    y_offset: u16,
-    minus_x_offset: u16,
-    minus_y_offset: u16,
+    pub title: &'static str,
+    pub height: u16,
+    pub width: u16,
+    pub x_offset: u16,
+    pub y_offset: u16,
+    pub minus_x_offset: u16,
+    pub minus_y_offset: u16,
 }
 
 impl Popup {
