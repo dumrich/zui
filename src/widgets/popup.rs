@@ -120,7 +120,7 @@ impl Widget for Popup {
             } else if index == 2 {
                 for c in self.title.chars() {
                     term.set_cursor_to(term.x_pos + 1, term.y_pos).unwrap();
-                    term.print(c.to_string().as_ref()).unwrap();
+                    term.print(c).unwrap();
                 }
             } else if index == self.width - title_chars {
                 term.print(ROUNDED_TOP_RIGHT).unwrap();
