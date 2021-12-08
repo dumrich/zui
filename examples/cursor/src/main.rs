@@ -11,16 +11,15 @@ fn main() {
     let mut my_term = Terminal::new(&mut output).unwrap();
 
     // Test setting the cursor and changing the color
-    my_term
-        .set_cursor_to(my_term.rel_size.0 - 1, my_term.rel_size.1 - 1)
-        .unwrap();
-    println!(
+    my_term.set_cursor_to(1, my_term.rel_size.1).unwrap();
+    print!(
         "{}Wassup I'm red {}{} Now I'm bold!{}",
         color::fg(Color::RGB(0, 255, 0)),
         color::fg(Color::Reset),
         style::set(style::Style::Bold),
         style::set(style::Style::Reset)
     );
+    my_term.hide_cursor().unwrap();
 
     // Test hiding the cursor
     thread::sleep(Duration::from_secs(2));
