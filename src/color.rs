@@ -90,7 +90,7 @@ fn derive_color_bg(color: Color) -> &'static str {
 /// Set text foreground color
 pub fn fg(color: Color) -> Ansi {
     if let Color::RGB(x, y, z) = color {
-        Ansi::from_str(format!("\u{001b}[38;2;{};{};{}", x, y, z).to_string())
+        Ansi::from_str(format!("\u{001b}[38;2;{};{};{}m", x, y, z).to_string())
     } else {
         Ansi::from_str(derive_color_fg(color).to_string())
     }
@@ -99,7 +99,7 @@ pub fn fg(color: Color) -> Ansi {
 /// Set text background color
 pub fn bg(color: Color) -> Ansi {
     if let Color::RGB(x, y, z) = color {
-        Ansi::from_str(format!("\u{001b}[48;2;{};{};{}", x, y, z).to_string())
+        Ansi::from_str(format!("\u{001b}[48;2;{};{};{}m", x, y, z).to_string())
     } else {
         Ansi::from_str(derive_color_bg(color).to_string())
     }
@@ -130,6 +130,13 @@ mod tests {
         println!(
             "{}I am writing in the color Purple!{} Now Green!{}",
             fg(purple_color),
+            fg(Color::Green),
+            fg(Color::Reset)
+        );
+
+        println!(
+            "{}I am writing in the color RGB!{} Now Green!{}",
+            fg(Color::RGB(0, 255, 0)),
             fg(Color::Green),
             fg(Color::Reset)
         );

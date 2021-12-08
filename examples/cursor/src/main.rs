@@ -16,7 +16,7 @@ fn main() {
         .unwrap();
     println!(
         "{}Wassup I'm red {}{} Now I'm bold!{}",
-        color::fg(Color::Red),
+        color::fg(Color::RGB(0, 255, 0)),
         color::fg(Color::Reset),
         style::set(style::Style::Bold),
         style::set(style::Style::Reset)
