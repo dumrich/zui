@@ -154,7 +154,7 @@ fn async_stdin(d: Stdin) -> crossbeam_channel::Receiver<Result<u8, Error>> {
 // Cursor Methods
 impl<T: Write> Terminal<'_, T> {
     pub fn set_cursor_to(&mut self, x_pos: u16, y_pos: u16) -> io::Result<()> {
-        if x_pos + 1 <= self.rel_size.0 && y_pos + 1 <= self.rel_size.1 {
+        if x_pos <= self.rel_size.0 + 1 && y_pos <= self.rel_size.1 + 1 {
             let result = write!(self.stdout, "\u{001b}[{};{}f", y_pos, x_pos)?;
             self.stdout.flush().unwrap();
             self.x_pos = x_pos;
